@@ -18,8 +18,9 @@
     */
 
     Route::get('/', function () {
-        Artisan::call('migrate:fresh');
+//        Artisan::call('migrate:fresh');
         $start_time = microtime(true);
+
         insertColors();
         insertStickers();
         insertGroups();
@@ -39,7 +40,7 @@
         $end_time = microtime(true);
         $execution_time = ($end_time - $start_time);
 
-        die('Gotovo za '.$execution_time.' sec');
+        die('Gotovo za '.round($execution_time, 2).' sec');
 
         return Inertia::render('Welcome', [
             'canLogin' => Route::has('login'),
