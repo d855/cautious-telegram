@@ -1,15 +1,47 @@
 <?php
 
-namespace App\Models;
+    namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Spatie\Translatable\HasTranslations;
+    use Illuminate\Database\Eloquent\Factories\HasFactory;
+    use Illuminate\Database\Eloquent\Model;
+    use Spatie\Translatable\HasTranslations;
 
-class Pmodel extends Model
-{
-    use HasFactory, HasTranslations;
-    public $translatable = ['description'];
+    class Pmodel extends Model
+    {
 
-    protected $guarded = [];
-}
+        use HasFactory, HasTranslations;
+
+        public $translatable = ['description'];
+
+        protected $guarded = [];
+        protected $appends = ['stock', 'status', 'display_code', 'shades'];
+
+        public function getStockAttribute()
+        {
+            return ProductStock::where('product_id', 'like', $this->id.'%')->sum('quantity');
+        }
+
+        public function getStatusAttribute()
+        {
+            $statuses = [];
+            foreach (ProductStatus::select('status_id')->where('product_id', 'like', $this->id.'%')->get() as $one) $statuses[] = $one ? Status::where('id', $one['status_id'])->get() : null;
+            return array_unique($statuses);
+        }
+
+        public function getColorsAttribute()
+        {
+
+        }
+
+        public function getDisplayCodeAttribute()
+        {
+            return substr_replace($this->id, '.', 2, -3);
+        }
+
+        public function getShadesAttribute()
+        {
+            return $shades = Product::select('shade_id')->where('pid', 'like', $this->id . '%')->get();
+            /* TODO: get shade color and display on page */
+        }
+
+    }

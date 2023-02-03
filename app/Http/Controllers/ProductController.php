@@ -1,10 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+    namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+    use App\Models\Pmodel;
+    use App\Models\Product;
+    use Illuminate\Http\Request;
+    use Inertia\Inertia;
 
-class ProductController extends Controller
-{
-    //
-}
+    class ProductController extends Controller
+    {
+
+        public function show(Pmodel $model)
+        {
+            //
+        }
+
+    }

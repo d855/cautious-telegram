@@ -15,9 +15,7 @@ use Illuminate\Database\Schema\Blueprint;
     {
         Schema::create('product_stickers', function (Blueprint $table) {
             $table->string('product_id')->index();
-            $table->foreign('product_id')->references('pid')->on('products')->onDelete('cascade');
             $table->unsignedBigInteger('sticker_id')->index();
-            $table->foreign('sticker_id')->references('id')->on('stickers')->onDelete('cascade');
             $table->timestamps();
 //            $table->primary(['product_id', 'sticker_id']);
         });

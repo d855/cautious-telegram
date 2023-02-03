@@ -1,5 +1,8 @@
 <?php
 
+    use App\Http\Controllers\PagesController;
+    use App\Http\Controllers\PmodelController;
+    use App\Http\Controllers\ProductController;
     use App\Http\Controllers\ProfileController;
     use Illuminate\Foundation\Application;
     use Illuminate\Support\Facades\Artisan;
@@ -17,10 +20,23 @@
     |
     */
 
-    Route::get('/', function () {
-//        Artisan::call('migrate:fresh');
-        $start_time = microtime(true);
+    Route::get('/', [PagesController::class, 'home']);
 
+    Route::resource('products', ProductController::class);
+    Route::resource('models', PmodelController::class);
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard');
+    })->middleware(['auth', 'verified'])->name('dashboard');
+
+    Route::middleware('auth')->group(function () {
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    });
+
+    Route::get('/updatedb', function () {
+
+        $start_time = microtime(true);
         insertColors();
         insertStickers();
         insertGroups();
@@ -41,23 +57,6 @@
         $execution_time = ($end_time - $start_time);
 
         die('Gotovo za '.round($execution_time, 2).' sec');
-
-        return Inertia::render('Welcome', [
-            'canLogin' => Route::has('login'),
-            'canRegister' => Route::has('register'),
-            'laravelVersion' => Application::VERSION,
-            'phpVersion' => PHP_VERSION,
-        ]);
-    });
-
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->middleware(['auth', 'verified'])->name('dashboard');
-
-    Route::middleware('auth')->group(function () {
-        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
 
     require __DIR__.'/auth.php';

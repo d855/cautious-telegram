@@ -20,15 +20,13 @@
 
     function getData($lang, $model)
     {
-        $url = "http://apiv1.promosolution.services/{$lang}/api/{$model}";
+        $url = "http://apiv1.promosolution.services/$lang/api/$model";
         $token = getDBToken() ?? getToken();
-
-        $response = Http::withToken($token['value'])->timeout(300)->acceptJson()->get($url);
+        $response = Http::withToken($token['value'])->acceptJson()->get($url);
         if ($response->failed()) {
             $token = getToken();
-            $response = Http::withToken($token['value'])->timeout(300)->acceptJson()->get($url);
+            $response = Http::withToken($token['value'])->acceptJson()->get($url);
         }
-
         return json_decode($response, true);
     }
 
@@ -42,8 +40,8 @@
         $url = "http://apiv1.promosolution.services/token";
         $response = Http::asForm()->post($url, [
             'grant_type' => 'password',
-            'username' => 'penda',
-            'password' => 'PND011!bgd'
+            'username' => env("PROMOBOX_USERNAME"),
+            'password' => env("PROMOBOX_PASSWORD")
         ]);
         $response = json_decode($response, true);
 
@@ -71,9 +69,6 @@
                     'pid' => $color['Id'],
                     'html' => $color['HtmlColor']
                 ], ['image' => $color['Image'], 'name' => [$lang => $color['Name']]]);
-                //                $newColor->image = $color['Image'];
-                //                $newColor->name = [$lang => $color['Name']];
-                //                $newColor->save();
             }
         }
 
@@ -90,9 +85,6 @@
                     'id' => $item['Id'],
                     'image' => $item['Image'],
                 ], ['name' => [$lang => $item['Name']], 'type' => [$lang => $item['Type']]]);
-                //                $newItem->name = [$lang => $item['Name']];
-                //                $newItem->type = [$lang => $item['Type']];
-                //                $newItem->save();
             }
         }
     }
@@ -113,11 +105,6 @@
                     'name'
                     => [$lang => $item['Name']]
                 ]);
-                //                $newItem->sort = $item['Sort'];
-                //                $newItem->multitree = $item['MultiTree'];
-                //                $newItem->parent = $item['Parent'];
-                //                $newItem->name = [$lang => $item['Name']];
-                //                $newItem->save();
             }
         }
     }
@@ -145,9 +132,6 @@
                     'id' => $item['Id'],
                     'html' => $item['HtmlColor']
                 ], ['image' => $item['Image'], 'name' => [$lang => $item['Name']]]);
-                //                $newItem->image = $item['Image'];
-                //                $newItem->name = [$lang => $item['Name']];
-                //                $newItem->save();
             }
         }
     }
@@ -163,8 +147,6 @@
                     'id' => $item['Id'],
                     'image' => $item['Image'],
                 ], ['name' => [$lang => $item['Name']]]);
-                //                $newItem->name = [$lang => $item['Name']];
-                //                $newItem->save();
             }
         }
     }
@@ -181,8 +163,6 @@
                 'image' => $item['Image'],
                 'category' => $item['Category'],
             ], ['sort' => $item['Sort']]);
-            //            $newItem->sort = $item['Sort'];
-            //            $newItem->save();
         }
     }
 
@@ -201,21 +181,12 @@
                     'image' => $item['Image'],
                     'imageWebP' => $item['ImageWebP'],
                     'imageGif' => $item['ImageGif'],
+                    'imageHover' => $item['ImageHover'],
                     'groupWeb1' => $item['GroupWeb1'],
                     'groupWeb2' => $item['GroupWeb2'],
                     'groupWeb3' => $item['GroupWeb3'],
                     'sort' => $item['Sort']
                 ]);
-//                $newItem->description = [$lang => $item['Description']];
-//                $newItem->image = $item['Image'];
-//                $newItem->imageWebP = $item['ImageWebP'];
-//                $newItem->imageGif = $item['ImageGif'];
-//                $newItem->imageHover = $item['ImageHover'];
-//                $newItem->groupWeb1 = $item['GroupWeb1'];
-//                $newItem->groupWeb2 = $item['GroupWeb2'];
-//                $newItem->groupWeb3 = $item['GroupWeb3'];
-//                $newItem->sort = $item['Sort'];
-//                $newItem->save();
             }
         }
     }
@@ -234,14 +205,6 @@
                 'brand_id' => $item['Brand'],
             ], ['color_id' => $item['Color'], 'shade_id' => $item['Shade'], 'size_id' => $item['Size'], 'price' =>
                $item['Price'], 'pricePromobox' => $item['Price2'], 'name' => $item['Name']]);
-
-//            $newItem->color_id = $item['Color'];
-//            $newItem->shade_id = $item['Shade'];
-//            $newItem->size_id = $item['Size'];
-//            $newItem->price = $item['Price'];
-//            $newItem->pricePromobox = $item['Price2'];
-//            $newItem->name = $item['Name'];
-//            $newItem->save();
         }
         $models = Pmodel::all();
         foreach ($models as $model) {
@@ -288,7 +251,6 @@
             $newItem = ProductStock::firstOrCreate([
                 'product_id' => $item['ProductId'],
                 'warehouse' => $item['Warehouse'],
-                //                'date' => $item['']
                 'quantity' => $item['Qty']
             ]);
         }
@@ -306,8 +268,6 @@
                     'date' => $item['Arrival'],
                     'quantity' => $item['Qty'],
                 ], ['value' => [$lang => $item['Value']]]);
-//                $newItem->value = [$lang => $item['Value']];
-//                $newItem->save();
             }
         }
     }
