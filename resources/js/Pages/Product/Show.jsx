@@ -82,7 +82,7 @@ function Show(props) {
                 </header>
 
                 <main>
-                    <div className="mt-10 text-xs px-5 text-gray-500">Svi proizvodi > Tehnologija <span className="font-bold text-black">{props.product.Name}</span>
+                    <div className="mt-10 text-xs px-5 text-gray-500">Svi proizvodi {'>'} Tehnologija <span className="font-bold text-black">{props.product.Name}</span>
                     </div>
                     <div className="px-3 mt-20">
                         <div>
