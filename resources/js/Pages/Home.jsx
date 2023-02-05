@@ -151,6 +151,7 @@ export default function Home(props) {
                                                   code={product.id_view}
                                                   stock={product.stock}
                                                   status={product.status}
+                                                  shades={product.shades}
                                                   description={product.description['sr']}></Card>
                                         </SwiperSlide>
                                     )

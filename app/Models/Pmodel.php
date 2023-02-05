@@ -28,11 +28,6 @@
             return array_unique($statuses);
         }
 
-        public function getColorsAttribute()
-        {
-
-        }
-
         public function getDisplayCodeAttribute()
         {
             return substr_replace($this->id, '.', 2, -3);
@@ -40,8 +35,10 @@
 
         public function getShadesAttribute()
         {
-            return $shades = Product::select('shade_id')->where('pid', 'like', $this->id . '%')->get();
-            /* TODO: get shade color and display on page */
+			$shades = [];
+			foreach (Product::select('shade_id')->where('pid', 'like', $this->id . '%')->get() as $shade) $shades[] =
+				$shade ? Shade::where('id', $shade['shade_id'])->get() : null;
+			return array_unique( $shades);
         }
 
     }

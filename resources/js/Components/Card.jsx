@@ -19,7 +19,7 @@ function Card(props) {
         colors: []
     }
 
-    const baseUrl = "http://promobox-laravel.test/api/model-info";
+    const baseUrl = "http://pmbx.test/api/model-info";
 
     const modalInfo = () => {
         axios.get(`${baseUrl}/${props.name}`)
@@ -48,8 +48,9 @@ function Card(props) {
         setShowStockInfo(false);
         clearState()
     }
+
     return (
-        <div className="card flex flex-col w-1/2 h-full border p-5 transition ease-in shadow-lg rounded-lg hover:border-black lg:w-[270px]">
+        <div className="card flex flex-col w-1/2 h-full border p-5 transition ease-in shadow-lg rounded-lg hover:border-black lg:w-[270px] lg:h-[450px]">
             <div className="flex justify-between">
                 <div className="group">
                     <img src={props.image}
@@ -81,12 +82,17 @@ function Card(props) {
                                                                                                                                     zaliha
                     </button>
                 </div>
-                <div className="flex items-end -space-x-1 overflow-hidden">
-                    <div
-                        className="inline-block h-6 w-6 rounded-full ring-2 ring-white bg-orange-300"></div>
+                <div className="flex items-end space-x-1 px-2 py-2 overflow-hidden">
+                    {props.shades.map((shade, index) => {
+                        return (
+                            <div key={index}
+                                 className={`inline-block h-6 w-6 rounded-full ring-2 ring-gray-200`} style={ shade[0].html ? {background: `${shade[0].html}`} : {background: `url(${shade[0].image})` } }></div>
+                        )
+                    })}
+
                 </div>
                 <Modal show={showStockInfo} onClose={closeModal} maxWidth="7xl">
-                    <div>
+                    <div className="p-10">
                         <header className="px-5 flex justify-between items-center">
                             <div className="flex items-center space-x-3">
                                 <img src={modalData.image}
@@ -126,7 +132,8 @@ function Card(props) {
                                     return (
                                         <tr key={index} className="hover:bg-gray-50">
                                             <th className="flex gap-3 px-6 py-4 font-normal text-gray-900">
-                                                <div className={`relative border border-gray-300 rounded-full h-10 w-10 bg-[${c.HtmlColor}]}`} style={{background: `${c.HtmlColor}`}}>
+                                                <div className={`relative border border-gray-300 rounded-full h-10 w-10 bg-[${c.HtmlColor}]}`}
+                                                     style={{background: `${c.HtmlColor}`}}>
                                                     {/*<img src="https://apiv2.promosolution.services/Content/Images/Shade/transparent.png"*/}
                                                     {/*     className="rounded-full object-cover object-center"*/}
                                                     {/*     alt="" />*/}
