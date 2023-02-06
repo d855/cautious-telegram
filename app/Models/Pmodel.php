@@ -40,5 +40,5 @@
 				$shade ? Shade::where('id', $shade['shade_id'])->get() : null;
 			return array_unique( $shades);
         }
-
+        
     }

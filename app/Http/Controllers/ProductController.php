@@ -4,6 +4,7 @@
 
     use App\Models\Pmodel;
     use App\Models\Product;
+    use App\Models\ProductArrival;
     use Illuminate\Http\Request;
     use Inertia\Inertia;
 
@@ -13,6 +14,11 @@
         public function show(Pmodel $model)
         {
             //
+        }
+    
+        public function arrival($product)
+        {
+            return ProductArrival::where('product_id', $product);
         }
 
     }

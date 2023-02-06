@@ -9,20 +9,18 @@ function Card(props) {
         name: '',
         description: '',
         image: '',
-        colors: []
+        colors: [],
     })
-
     const initialState = {
         name: '',
         description: '',
         image: '',
         colors: []
     }
-
-    const baseUrl = "http://pmbx.test/api/model-info";
-
+    let allStock = 0;
+    const baseUrl = "http://promobox-laravel.test/api/";
     const modalInfo = () => {
-        axios.get(`${baseUrl}/${props.name}`)
+        axios.get(`${baseUrl}model-info/${props.name}`)
             .then((response) => {
                 setModalData({
                     id: response.data.Id,
@@ -34,21 +32,24 @@ function Card(props) {
             })
             .catch(e => console.log(e))
     }
-
+    const fetchArrival = () => {
+    
+    }
+    
     const clearState = () => {
         setModalData({...initialState})
     }
-
+    
     const openModal = () => {
         modalInfo()
         setShowStockInfo(true);
-
+        
     }
     const closeModal = () => {
         setShowStockInfo(false);
         clearState()
     }
-
+    
     return (
         <div className="card flex flex-col w-1/2 h-full border p-5 transition ease-in shadow-lg rounded-lg hover:border-black lg:w-[270px] lg:h-[450px]">
             <div className="flex justify-between">
@@ -76,7 +77,7 @@ function Card(props) {
             <div className="flex flex-col justify-end">
                 <span className="flex items-center text-lg font-bold mt-3">{props.price}&euro;</span>
                 <div className="flex flex-col justify-end mb-3">
-                    <span className="block text-xs text-gray-400">Zalihe: {props.stock}</span>
+                    <span className="block text-xs text-gray-400">Zalihe: {props.stock.toLocaleString('en-US')}</span>
                     <button onClick={openModal}
                             className="block text-xs text-left w-fit text-blue-600 transition ease-in duration-500 hover:underline">Prikaz
                                                                                                                                     zaliha
@@ -86,14 +87,15 @@ function Card(props) {
                     {props.shades.map((shade, index) => {
                         return (
                             <div key={index}
-                                 className={`inline-block h-6 w-6 rounded-full ring-2 ring-gray-200`} style={ shade[0].html ? {background: `${shade[0].html}`} : {background: `url(${shade[0].image})` } }></div>
+                                 className={`inline-block h-6 w-6 rounded-full ring-2 ring-gray-200`}
+                                 style={shade[0].html ? {background: `${shade[0].html}`} : {background: `url(${shade[0].image})`}}></div>
                         )
                     })}
-
+                
                 </div>
                 <Modal show={showStockInfo} onClose={closeModal} maxWidth="7xl">
-                    <div className="p-10">
-                        <header className="px-5 flex justify-between items-center">
+                    <div className="">
+                        <header className="px-5 py-5 flex justify-between items-center">
                             <div className="flex items-center space-x-3">
                                 <img src={modalData.image}
                                      className="w-36"
@@ -104,12 +106,12 @@ function Card(props) {
                                 </div>
                             </div>
                             <div className="">
-                                <select name="#" id="#" className="w-64 rounded-md border-gray-400">
+                                <select name="#" id="#" className="w-72 rounded-md border-gray-400">
                                     <option value="0">Izaberi boju</option>
                                     {modalData.colors.map((color, index) => {
                                         return (
-                                            <option key={index} value="0">
-
+                                            <option key={index} value="0" className="flex">
+                                                {color.Name}
                                             </option>
                                         )
                                     })}
@@ -134,9 +136,6 @@ function Card(props) {
                                             <th className="flex gap-3 px-6 py-4 font-normal text-gray-900">
                                                 <div className={`relative border border-gray-300 rounded-full h-10 w-10 bg-[${c.HtmlColor}]}`}
                                                      style={{background: `${c.HtmlColor}`}}>
-                                                    {/*<img src="https://apiv2.promosolution.services/Content/Images/Shade/transparent.png"*/}
-                                                    {/*     className="rounded-full object-cover object-center"*/}
-                                                    {/*     alt="" />*/}
                                                 </div>
                                                 <div className="text-sm text-left">
                                                     <div className="font-medium text-gray-500">
@@ -147,23 +146,30 @@ function Card(props) {
                                             </th>
                                             <td className="text-center">
                                                 <div className="font-medium">
-                                                    {(c.Sizes.length > 1) ? c.Sizes[index].Product.Price : c.Sizes[0].Product.Price}&euro;
+                                                    {(c.Sizes.length > 1) ? c.Sizes[index].Product.Price.toFixed(2) : c.Sizes[0].Product.Price.toFixed(2)}&euro;
                                                 </div>
                                             </td>
                                             <td className="text-center">
                                                 <div className="font-medium">
-                                                    {/*{(c.Sizes.length > 1) ? c.Sizes[index].Product.Stock : c.Sizes[0].Product.Price}*/}
-                                                    {c.Sizes[0].Product.Stocks[index]?.Qty}
+                                                    {
+                                                        c.Sizes[0].Product.Stocks.map((stock) => {
+                                                            if (stock.Warehouse === 'Warehouse1' || stock.Warehouse === 'Warehouse2') {
+                                                                return (stock.Qty)
+                                                            }
+                                                        }).reduce((a, b) => a + b, 0).toLocaleString('en-US')
+                                                    }
                                                 </div>
                                             </td>
                                             <td className="text-center">
                                                 <div className="font-medium">
-
+                                                    {c.Sizes[0].Product.Stocks.map((stock) => {
+                                                        stock.Warehouse === 'Warehouse3' && stock.Qty
+                                                    })}
                                                 </div>
                                             </td>
                                             <td className="text-center">
                                                 <div className="font-medium">
-
+                                                
                                                 </div>
                                             </td>
                                         </tr>

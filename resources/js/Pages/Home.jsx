@@ -69,7 +69,7 @@ export default function Home(props) {
                                     <path strokeLinecap="round" strokeLinejoin="round"
                                           d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
                                 </svg>
-
+                                
                                 <span>RS</span>
                             </div>
                         </div>
@@ -124,7 +124,7 @@ export default function Home(props) {
                             })}
                         </Swiper>
                     </div>
-
+                    
                     <section className="noviteti py-20">
                         <div>
                             <h2 className="w-fit text-center text-2xl font-bold tracking-wide mx-auto p-4 lg:text-3xl">
@@ -148,8 +148,8 @@ export default function Home(props) {
                                                   image={product.imageWebP}
                                                   imageHover={product.imageHover ? product.imageHover : product.imageWebP}
                                                   price={product.minPrice}
-                                                  code={product.id_view}
-                                                  stock={product.stock}
+                                                  code={product.display_code}
+                                                  stock={parseInt(product.stock)}
                                                   status={product.status}
                                                   shades={product.shades}
                                                   description={product.description['sr']}></Card>
@@ -159,7 +159,7 @@ export default function Home(props) {
                             </Swiper>
                         </div>
                     </section>
-
+                    
                     <section className="featured px-5 mt-20">
                         <div className="div1">
                             <a href="#">
@@ -230,16 +230,16 @@ export default function Home(props) {
                         </div>
                         <a href="#" className="text-xs text-gray-500 tracking-wide">Powered by Digital2.rs</a>
                     </div>
-
+                    
                     <div className="flex flex-col justify-start mt-2 text-xs tracking-wide sm:pl-16 lg:w-1/4 lg:border-r lg:pr-3 lg:text-sm lg:mt-0 xl:w-1/4">
                         <a href="#">Katalog promotivnih poklona 2022</a>
                         <a href="#">Katalog rokovnika i kalendara 2023</a>
                         <a href="#">Marketing alati</a>
                     </div>
-
+                    
                     <div className="mt-10 sm:mt-0 sm:border-r sm:w-1/2 lg:w-1/5 lg:pl-5 xl:w-1/6 2xl:pl-16">
                         <div className="mb-5 xl:mb-8 2xl:text-sm">Pratite nas</div>
-
+                        
                         <div className="flex space-x-3 lg:space-x-1 lg:justify-start">
                             <a href="">
                                 <img src="https://promobox.com/wp-content/themes/promobox/img/facebook.svg"
@@ -263,18 +263,18 @@ export default function Home(props) {
                             </a>
                         </div>
                     </div>
-
+                    
                     <div className="flex flex-col text-xs mt-5 sm:mt-0 sm:pl-16 lg:pl-10">
                         <div>
                             <a href="#">marketing@promobox.com</a><br />
                             Prijavite se na nas newsletter
                         </div>
-
+                        
                         <div className="mt-3">
                             <form action="#">
                                 <input type="search" placeholder="Vasa email adresa"
                                        className="py-1 px-2 border border-gray-400 rounded-full lg:w-36 2xl:w-64" />
-
+                                
                                 <button className="text-xs leading-none bg-gray-200 px-3 py-2 rounded-full 2xl:px-7">Posalji</button>
                             </form>
                         </div>

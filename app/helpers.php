@@ -27,6 +27,7 @@
             $token = getToken();
             $response = Http::withToken($token['value'])->acceptJson()->get($url);
         }
+
         return json_decode($response, true);
     }
 
@@ -61,14 +62,16 @@
     function insertColors()
     {
         $locales = ['sr', 'en', 'de', 'sq', 'hr', 'sl', 'mk'];
-		Color::truncate();
+        Color::truncate();
         foreach ($locales as $lang) {
             $data = getData($lang, 'color');
             foreach ($data as $color) {
-                Color::updateOrCreate([
+                Color::create([
                     'pid' => $color['Id'],
-                    'html' => $color['HtmlColor']
-                ], ['image' => $color['Image'], 'name' => [$lang => $color['Name']]]);
+                    'html' => $color['HtmlColor'],
+                    'image' => $color['Image'],
+                    'name' => [$lang => $color['Name']]
+                ]);
             }
         }
     }
@@ -76,14 +79,16 @@
     function insertStickers()
     {
         $locales = ['sr', 'en', 'de', 'sq', 'hr', 'sl', 'mk'];
-		Sticker::truncate();
+        Sticker::truncate();
         foreach ($locales as $lang) {
             $data = getData($lang, 'sticker');
             foreach ($data as $item) {
-                Sticker::updateOrCreate([
+                Sticker::create([
                     'id' => $item['Id'],
                     'image' => $item['Image'],
-                ], ['name' => [$lang => $item['Name']], 'type' => [$lang => $item['Type']]]);
+                    'name' => [$lang => $item['Name']],
+                    'type' => [$lang => $item['Type']]
+                ]);
             }
         }
     }
@@ -91,18 +96,16 @@
     function insertGroups()
     {
         $locales = ['sr', 'en', 'de', 'sq', 'hr', 'sl', 'mk'];
-		Group::truncate();
+        Group::truncate();
         foreach ($locales as $lang) {
             $data = getData($lang, 'groups');
             foreach ($data as $item) {
-                Group::updateOrCreate([
+                Group::create([
                     'pid' => $item['Code'],
-                ], [
                     'sort' => $item['Sort'],
                     'multitree' => $item['MultiTree'],
                     'parent' => $item['Parent'],
-                    'name'
-                    => [$lang => $item['Name']]
+                    'name' => [$lang => $item['Name']]
                 ]);
             }
         }
@@ -112,9 +115,9 @@
     {
         $lang = 'en';
         $data = getData($lang, 'brand');
-		Brand::truncate();
+        Brand::truncate();
         foreach ($data as $item) {
-            Brand::firstOrCreate([
+            Brand::create([
                 'pid' => $item['Id'],
                 'image' => $item['Image']
             ]);
@@ -124,14 +127,16 @@
     function insertShades()
     {
         $locales = ['sr', 'en', 'de', 'sq', 'hr', 'sl', 'mk'];
-		Shade::truncate();
+        Shade::truncate();
         foreach ($locales as $lang) {
             $data = getData($lang, 'shade');
             foreach ($data as $item) {
-                Shade::updateOrCreate([
+                Shade::create([
                     'id' => $item['Id'],
-                    'html' => $item['HtmlColor']
-                ], ['image' => $item['Image'], 'name' => [$lang => $item['Name']]]);
+                    'html' => $item['HtmlColor'],
+                    'image' => $item['Image'],
+                    'name' => [$lang => $item['Name']]
+                ]);
             }
         }
     }
@@ -139,15 +144,16 @@
     function insertStatus()
     {
         $locales = ['sr', 'en', 'de', 'sq', 'hr', 'sl', 'mk'];
-		
-		Status::truncate();
+
+        Status::truncate();
         foreach ($locales as $lang) {
             $data = getData($lang, 'status');
             foreach ($data as $item) {
-                Status::updateOrCreate([
+                Status::create([
                     'id' => $item['Id'],
                     'image' => $item['Image'],
-                ], ['name' => [$lang => $item['Name']]]);
+                    'name' => [$lang => $item['Name']]
+                ]);
             }
         }
     }
@@ -156,8 +162,8 @@
     {
         $lang = 'en';
         $data = getData($lang, 'size');
-		
-		Size::truncate();
+
+        Size::truncate();
         foreach ($data as $item) {
             Size::updateOrCreate([
                 'pid' => $item['Id'],
@@ -165,7 +171,8 @@
                 'kid' => $item['KidsSize'],
                 'image' => $item['Image'],
                 'category' => $item['Category'],
-            ], ['sort' => $item['Sort']]);
+                'sort' => $item['Sort']
+            ]);
         }
     }
 
@@ -173,14 +180,13 @@
     {
         $locales = ['sr', 'en', 'de', 'sq', 'hr', 'sl', 'mk'];
 
-		Pmodel::truncate();
+        Pmodel::truncate();
         foreach ($locales as $lang) {
             $data = getData($lang, 'model');
             foreach ($data as $item) {
-                Pmodel::updateOrCreate([
+                Pmodel::create([
                     'id' => $item['Id'],
                     'name' => $item['Name'],
-                ], [
                     'description' => [$lang => $item['Description']],
                     'image' => $item['Image'],
                     'imageWebP' => $item['ImageWebP'],
@@ -200,16 +206,21 @@
         $lang = 'sr';
         $data = getData($lang, 'product');
 
-		Product::truncate();
+        Product::truncate();
         foreach ($data as $item) {
-           Product::updateOrCreate([
+            Product::create([
                 'pid' => $item['Id'],
                 'id_view' => $item['ProductIdView'],
                 'model_id' => substr($item['Id'], 0, 5),
                 'model_name' => $item['Model'],
                 'brand_id' => $item['Brand'],
-            ], ['color_id' => $item['Color'], 'shade_id' => $item['Shade'], 'size_id' => $item['Size'], 'price' =>
-               $item['Price'], 'pricePromobox' => $item['Price2'], 'name' => $item['Name']]);
+                'color_id' => $item['Color'],
+                'shade_id' => $item['Shade'],
+                'size_id' => $item['Size'],
+                'price' => $item['Price'],
+                'pricePromobox' => $item['Price2'],
+                'name' => $item['Name']
+            ]);
         }
         $models = Pmodel::all();
         foreach ($models as $model) {
@@ -227,14 +238,17 @@
     {
         $lang = 'sr';
         $data = getData($lang, 'productimage');
-		
-		Image::truncate();
+
+        Image::truncate();
         foreach ($data as $item) {
-            Image::updateOrCreate([
+            Image::create([
                 'product_id' => $item['ProductId'],
                 'image_number' => $item['No'],
                 'pid_inb' => $item['ProductId'].'_'.$item['No'],
-            ], ['image' => $item['Image'], 'imageWebp' => $item['ImageWebP'], 'imageGif' => $item['ImageGif']]);
+                'image' => $item['Image'],
+                'imageWebp' => $item['ImageWebP'],
+                'imageGif' => $item['ImageGif']
+            ]);
         }
     }
 
@@ -242,10 +256,10 @@
     {
         $lang = 'sr';
         $data = getData($lang, 'productmedia');
-		
-		Media::truncate();
+
+        Media::truncate();
         foreach ($data as $item) {
-            Media::firstOrCreate([
+            Media::create([
                 'product_id' => $item['ProductId'],
                 'media' => $item['MediaUrl'],
             ]);
@@ -256,10 +270,10 @@
     {
         $lang = 'sr';
         $data = getData($lang, 'productstock');
-		
-		ProductStock::truncate();
+
+        ProductStock::truncate();
         foreach ($data as $item) {
-            $newItem = ProductStock::firstOrCreate([
+            $newItem = ProductStock::create([
                 'product_id' => $item['ProductId'],
                 'warehouse' => $item['Warehouse'],
                 'quantity' => $item['Qty']
@@ -271,15 +285,16 @@
     {
         $locales = ['sr', 'en', 'de', 'sq', 'hr', 'sl', 'mk'];
 
-		ProductArrival::truncate();
+        ProductArrival::truncate();
         foreach ($locales as $lang) {
             $data = getData($lang, 'productarrival');
             foreach ($data as $item) {
-               ProductArrival::updateOrCreate([
+                ProductArrival::create([
                     'product_id' => $item['ProductId'],
                     'date' => $item['Arrival'],
                     'quantity' => $item['Qty'],
-                ], ['value' => [$lang => $item['Value']]]);
+                    'value' => [$lang => $item['Value']]
+                ]);
             }
         }
     }
@@ -287,10 +302,10 @@
     function insertProductSticker()
     {
         $data = getData('en', 'productsticker');
-	
-	    ProductSticker::truncate();
+
+        ProductSticker::truncate();
         foreach ($data as $item) {
-            ProductSticker::updateOrCreate([
+            ProductSticker::create([
                 'product_id' => $item['ProductId'],
                 'sticker_id' => $item['StickerId']
             ]);
@@ -300,10 +315,10 @@
     function insertProductStatus()
     {
         $data = getData('en', 'productstatus');
-	
-	    ProductStatus::truncate();
+
+        ProductStatus::truncate();
         foreach ($data as $item) {
-            ProductStatus::firstOrCreate([
+            ProductStatus::create([
                 'product_id' => $item['ProductId'],
                 'status_id' => $item['StatusId']
             ]);
