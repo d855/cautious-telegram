@@ -36,26 +36,28 @@
     });
 
     Route::get('/updatedb', function () {
-
+    
+        Artisan::call('migrate:fresh');
+        
         $start_time = microtime(true);
 
         Schema::disableForeignKeyConstraints();
 
-        insertColors();
-        insertStickers();
-        insertGroups();
-        insertBrands();
-        insertShades();
-        insertStatus();
-        insertSize();
-        insertModels();
-        insertProducts();
-        insertImages();
-        insertMedia();
-        insertProductStock();
-        insertProductArrival();
+//        insertColors();
+//        insertStickers();
+//        insertGroups();
+//        insertBrands();
+//        insertShades();
+//        insertStatus();
+//        insertSize();
+//        insertModels();
+//        insertProducts();
+//        insertImages();
+//        insertMedia();
+//        insertProductStock();
+//        insertProductArrival();
         insertProductSticker();
-        insertProductStatus();
+//        insertProductStatus();
 
         Schema::enableForeignKeyConstraints();
 

@@ -17,7 +17,7 @@ use Illuminate\Database\Schema\Blueprint;
             $table->string('product_id')->index();
             $table->unsignedBigInteger('sticker_id')->index();
             $table->timestamps();
-//            $table->primary(['product_id', 'sticker_id']);
+            $table->primary(['product_id', 'sticker_id']);
         });
     }
 

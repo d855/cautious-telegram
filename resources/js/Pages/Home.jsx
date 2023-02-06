@@ -124,7 +124,6 @@ export default function Home(props) {
                             })}
                         </Swiper>
                     </div>
-                    
                     <section className="noviteti py-20">
                         <div>
                             <h2 className="w-fit text-center text-2xl font-bold tracking-wide mx-auto p-4 lg:text-3xl">
@@ -159,7 +158,6 @@ export default function Home(props) {
                             </Swiper>
                         </div>
                     </section>
-                    
                     <section className="featured px-5 mt-20">
                         <div className="div1">
                             <a href="#">

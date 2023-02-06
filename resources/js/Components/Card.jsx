@@ -33,7 +33,6 @@ function Card(props) {
             .catch(e => console.log(e))
     }
     const fetchArrival = () => {
-    
     }
     
     const clearState = () => {
