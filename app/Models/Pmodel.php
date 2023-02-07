@@ -41,4 +41,6 @@
 			return array_unique( $shades);
         }
         
+        /*TODO: get min and max price for model by product*/
+        
     }

@@ -31,7 +31,7 @@ class CreateProductsTable extends Migration
             $table->string('color_id')->nullable()->default(null);
 //            $table->foreign('color_id')->references('pid')->on('colors');
 
-            $table->foreignId('shade_id')->nullable()->constrained('shades');
+            $table->foreignId('shade_id')->nullable();
 
             $table->string('size_id')->nullable()->default(null);
 //            $table->foreign('size_id')->references('pid')->on('sizes');

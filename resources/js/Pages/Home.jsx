@@ -3,6 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper";
 import 'swiper/css/bundle';
 import Card from "@/Components/Card";
+import config from  '../config.json'
 
 const slider1_images = [
     'https://promobox.com/wp-content/uploads/2022/09/KUTIJE.webp',
@@ -27,6 +28,8 @@ const insta_slider = [
 ]
 
 export default function Home(props) {
+    const {site_url} = config;
+    console.log(site_url);
     return (
         <>
             <Head title="Home"></Head>

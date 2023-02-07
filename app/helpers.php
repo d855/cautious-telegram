@@ -19,6 +19,7 @@
     use Illuminate\Support\Facades\DB;
     use Illuminate\Support\Facades\Http;
     
+    
     function getData($lang, $model)
     {
         $url = "http://apiv1.promosolution.services/$lang/api/$model";
@@ -89,56 +90,97 @@
     
     function insertColors()
     {
-        $locales = ['sr', 'en', 'de', 'sq', 'hr', 'sl', 'mk'];
         Color::truncate();
+        $locales = ['sr', 'en', 'de', 'sq', 'hr', 'sl', 'mk'];
+        
+        $translations = [];
         foreach ($locales as $lang) {
             $data = getData($lang, 'color');
-            foreach ($data as $color) {
-                Color::updateOrCreate([
+            foreach ($data as $key => $color) {
+                $translations[$key][$lang] = $color['Name'];
+            }
+        }
+        
+        try {
+            $data = getData($locales[0], 'color');
+            foreach ($data as $key => $color) {
+                $color = Color::create([
                     'pid' => $color['Id'],
                     'html' => $color['HtmlColor'],
                     'image' => $color['Image'],
-                ], ['name' => [$lang => $color['Name']]]);
+                    'name' => $translations[$key]
+                ]);
             }
+        } catch (Exception $e) {
+            echo 'error colors '.$e;
+            insertColors();
         }
-        dg2_upisulog('colors');
+        //  dg2_upisulog('colors');
     }
     
     function insertStickers()
     {
-        $locales = ['sr', 'en', 'de', 'sq', 'hr', 'sl', 'mk'];
         Sticker::truncate();
+        
+        $locales = ['sr', 'en', 'de', 'sq', 'hr', 'sl', 'mk'];
+        
+        $data = null;
+        $translations = [];
+        $translations2 = [];
+        
         foreach ($locales as $lang) {
             $data = getData($lang, 'sticker');
-            foreach ($data as $item) {
-                Sticker::updateOrCreate([
-                    'id' => $item['Id'],
-                    'image' => $item['Image'],
-                ], [
-                    'name' => [$lang => $item['Name']],
-                    'type' => [$lang => $item['Type']]
-                ]);
+            foreach ($data as $key => $item) {
+                $translations[$item['Id']][$lang] = $item['Name'];
+                $translations2[$item['Id']][$lang] = $item['Type'];
             }
         }
-        dg2_upisulog('stickers');
+        try {
+            foreach ($data as $key => $item) {
+                Sticker::create([
+                    'id' => $item['Id'],
+                    'image' => $item['Image'],
+                    'name' => $translations[$item['Id']],
+                    'type' => $translations2[$item['Id']]
+                ]);
+            }
+        } catch (Exception $e) {
+            echo 'error stickers';
+            insertStickers();
+        }
     }
     
     function insertGroups()
     {
-        $locales = ['sr', 'en', 'de', 'sq', 'hr', 'sl', 'mk'];
         Group::truncate();
+        $locales = ['sr', 'en', 'de', 'sq', 'hr', 'sl', 'mk'];
+        
+        $data = null;
+        $translations = [];
+        
         foreach ($locales as $lang) {
             $data = getData($lang, 'groups');
-            foreach ($data as $item) {
-                Group::updateOrCreate([
+            foreach ($data as $key => $item) {
+                $translations[$key][$lang] = $item['Name'];
+            }
+        }
+        
+        try {
+            foreach ($data as $key => $item) {
+                Group::create([
                     'pid' => $item['Code'],
                     'sort' => $item['Sort'],
                     'multitree' => $item['MultiTree'],
                     'parent' => $item['Parent'],
-                ], ['name' => [$lang => $item['Name']]]);
+                    'name' => $translations[$key]
+                ]);
             }
+        } catch
+        (Exception $e) {
+            echo 'error groups';
+            insertGroups();
         }
-        dg2_upisulog('groups');
+        // dg2_upisulog('groups');
     }
     
     function insertBrands()
@@ -146,48 +188,75 @@
         $lang = 'en';
         $data = getData($lang, 'brand');
         Brand::truncate();
+        
         foreach ($data as $item) {
-            Brand::create([
-                'pid' => $item['Id'],
-                'image' => $item['Image']
-            ]);
+            try {
+                Brand::create([
+                    'pid' => $item['Id'],
+                    'image' => $item['Image']
+                ]);
+            } catch (Exception $e) {
+                echo 'error brands';
+                insertBrands();
+            }
         }
-        dg2_upisulog('brands');
     }
     
     function insertShades()
     {
-        $locales = ['sr', 'en', 'de', 'sq', 'hr', 'sl', 'mk'];
         Shade::truncate();
+        
+        $locales = ['sr', 'en', 'de', 'sq', 'hr', 'sl', 'mk'];
+        $data = null;
+        $translations = [];
+        
         foreach ($locales as $lang) {
             $data = getData($lang, 'shade');
-            foreach ($data as $item) {
-                Shade::updateOrCreate([
+            foreach ($data as $key => $item) {
+                $translations[$key][$lang] = $item['Name'];
+            }
+        }
+        try {
+            foreach ($data as $key => $item) {
+                Shade::create([
                     'id' => $item['Id'],
                     'html' => $item['HtmlColor'],
                     'image' => $item['Image'],
-                ], ['name' => [$lang => $item['Name']]]);
+                    'name' => $translations[$key]
+                ]);
             }
+        } catch (Exception $e) {
+            echo 'error shades';
+            insertShades();
         }
-        dg2_upisulog('shades');
     }
     
     function insertStatus()
     {
-        $locales = ['sr', 'en', 'de', 'sq', 'hr', 'sl', 'mk'];
-        
         Status::truncate();
+        $locales = ['sr', 'en', 'de', 'sq', 'hr', 'sl', 'mk'];
+        $translations = [];
+        $data = null;
+        
         foreach ($locales as $lang) {
             $data = getData($lang, 'status');
-            foreach ($data as $item) {
-                Status::updateOrCreate([
-                    'id' => $item['Id'],
-                    'image' => $item['Image'],
-                ], ['name' => [$lang => $item['Name']]]);
+            foreach ($data as $key => $color) {
+                $translations[$key][$lang] = $color['Name'];
             }
         }
         
-        dg2_upisulog('status');
+        try {
+            foreach ($data as $key => $item) {
+                Status::create([
+                    'id' => $item['Id'],
+                    'image' => $item['Image'],
+                    'name' => $translations[$key]
+                ]);
+            }
+        } catch (Exception $e) {
+            echo 'error status';
+            insertStatus();
+        }
     }
     
     function insertSize()
@@ -196,28 +265,43 @@
         $data = getData($lang, 'size');
         
         Size::truncate();
-        foreach ($data as $item) {
-            Size::create([
-                'pid' => $item['Id'],
-                'size_oid' => $item['SizeOID'],
-                'kid' => $item['KidsSize'],
-                'image' => $item['Image'],
-                'category' => $item['Category'],
-                'sort' => $item['Sort']
-            ]);
+        try {
+            foreach ($data as $item) {
+                Size::create([
+                    'pid' => $item['Id'],
+                    'size_oid' => $item['SizeOID'],
+                    'kid' => $item['KidsSize'],
+                    'image' => $item['Image'],
+                    'category' => $item['Category'],
+                    'sort' => $item['Sort']
+                ]);
+            }
+        } catch (Exception $e) {
+            echo 'error size';
+            insertSize();
         }
-        dg2_upisulog('size');
+        // dg2_upisulog('size');
     }
     
     function insertModels()
     {
+        Pmodel::truncate();
         $locales = ['sr', 'en', 'de', 'sq', 'hr', 'sl', 'mk'];
         
-        Pmodel::truncate();
+        $data = null;
+        $translations = [];
+        
         foreach ($locales as $lang) {
             $data = getData($lang, 'model');
-            foreach ($data as $item) {
-                Pmodel::updateOrCreate([
+            foreach ($data as $key => $item) {
+                $translations[$item['Name']][$lang] = $item['Description'];
+            }
+        }
+        
+        try {
+            foreach ($data as $key => $item) {
+                
+                $model = Pmodel::create([
                     'id' => $item['Id'],
                     'name' => $item['Name'],
                     'image' => $item['Image'],
@@ -227,11 +311,16 @@
                     'groupWeb1' => $item['GroupWeb1'],
                     'groupWeb2' => $item['GroupWeb2'],
                     'groupWeb3' => $item['GroupWeb3'],
-                    'sort' => $item['Sort']
-                ], ['description' => [$lang => $item['Description']],]);
+                    'sort' => $item['Sort'],
+                    'description' => $translations[$item['Name']]
+                ]);
+                //                    $model->description = [$lang => $item['Description']];
+                //                    $model->save();
             }
+        } catch (Exception $e) {
+            echo 'error model '.$e;
+            insertModels();
         }
-        dg2_upisulog('models');
     }
     
     function insertProducts()
@@ -240,27 +329,32 @@
         $data = getData($lang, 'product');
         
         Product::truncate();
-        foreach ($data as $item) {
-            Product::create([
-                'pid' => $item['Id'],
-                'id_view' => $item['ProductIdView'],
-                'model_id' => substr($item['Id'], 0, 5),
-                'model_name' => $item['Model'],
-                'brand_id' => $item['Brand'],
-                'color_id' => $item['Color'],
-                'shade_id' => $item['Shade'],
-                'size_id' => $item['Size'],
-                'price' => $item['Price'],
-                'pricePromobox' => $item['Price2'],
-                'name' => $item['Name']
-            ]);
+        try {
+            foreach ($data as $item) {
+                Product::create([
+                    'pid' => $item['Id'],
+                    'id_view' => $item['ProductIdView'],
+                    'model_id' => substr($item['Id'], 0, 5),
+                    'model_name' => $item['Model'],
+                    'brand_id' => $item['Brand'],
+                    'color_id' => $item['Color'],
+                    'shade_id' => $item['Shade'],
+                    'size_id' => $item['Size'],
+                    'price' => $item['Price'],
+                    'pricePromobox' => $item['Price2'],
+                    'name' => $item['Name']
+                ]);
+            }
+        } catch (Exception $e) {
+            echo 'error product';
+            insertProducts();
         }
         $models = Pmodel::all();
         foreach ($models as $model) {
             $model->minPrice = minPrice($model->name);
             $model->save();
         }
-        dg2_upisulog('products');
+        //        dg2_upisulog('products');
     }
     
     function minPrice($modelName)
@@ -274,26 +368,22 @@
         $data = getData($lang, 'productimage');
         
         Image::truncate();
-        foreach ($data as $item) {
-            //            Image::create([
-            //                'product_id' => $item['ProductId'],
-            //                'image_number' => $item['No'],
-            //             //   'pid_inb' => $item['ProductId'].'_'.$item['No'],
-            //                'image' => $item['Image'],
-            //                'imageWebp' => $item['ImageWebP'],
-            //                'imageGif' => $item['ImageGif']
-            //            ]);
-            DB::insert('insert into images (product_id, image_number,image,imageWebp,imageGif) values (?, ?,?,?,?)',
-                [
-                    $item['ProductId'],
-                    $item['No'],
-                    $item['Image'],
-                    $item['ImageWebP'],
-                    $item['ImageGif'],
-                ]);
-            
+        try {
+            foreach ($data as $item) {
+                DB::insert('insert into images (product_id, image_number,image,imageWebp,imageGif) values (?, ?,?,?,?)',
+                    [
+                        $item['ProductId'],
+                        $item['No'],
+                        $item['Image'],
+                        $item['ImageWebP'],
+                        $item['ImageGif'],
+                    ]);
+            }
+        } catch (Exception $e) {
+            echo 'error productimage';
+            insertImages();
         }
-        dg2_upisulog('images');
+        //        dg2_upisulog('images');
     }
     
     function insertMedia()
@@ -302,13 +392,18 @@
         $data = getData($lang, 'productmedia');
         
         Media::truncate();
-        foreach ($data as $item) {
-            Media::create([
-                'product_id' => $item['ProductId'],
-                'media' => $item['MediaUrl'],
-            ]);
+        try {
+            foreach ($data as $item) {
+                Media::create([
+                    'product_id' => $item['ProductId'],
+                    'media' => $item['MediaUrl'],
+                ]);
+            }
+        } catch (Exception $e) {
+            echo 'error productmedia';
+            insertMedia();
         }
-        dg2_upisulog('media');
+        //        dg2_upisulog('media');
     }
     
     function insertProductStock()
@@ -317,38 +412,51 @@
         $data = getData($lang, 'productstock');
         
         ProductStock::truncate();
-        foreach ($data as $item) {
-            //            $newItem = ProductStock::create([
-            //                'product_id' => $item['ProductId'],
-            //                'warehouse' => $item['Warehouse'],
-            //                'quantity' => $item['Qty']
-            //            ]);
-            DB::insert('insert into product_stocks (product_id,warehouse, quantity) values (?, ?, ?)', [
-                $item['ProductId'],
-                $item['Warehouse'],
-                $item['Qty']
-            ]);
-            
+        try {
+            foreach ($data as $item) {
+                DB::insert('insert into product_stocks (product_id,warehouse, quantity) values (?, ?, ?)', [
+                    $item['ProductId'],
+                    $item['Warehouse'],
+                    $item['Qty']
+                ]);
+                
+            }
+        } catch (Exception $e) {
+            echo 'error productstock';
+            insertProductStock();
         }
-        dg2_upisulog('productstock');
+        //        dg2_upisulog('productstock');
     }
     
     function insertProductArrival()
     {
-        $locales = ['sr', 'en', 'de', 'sq', 'hr', 'sl', 'mk'];
-        
         ProductArrival::truncate();
+        $locales = ['sr', 'en', 'de', 'sq', 'hr', 'sl', 'mk'];
+        $data = null;
+        $translations = [];
+        
         foreach ($locales as $lang) {
             $data = getData($lang, 'productarrival');
-            foreach ($data as $item) {
-                ProductArrival::updateOrCreate([
+            foreach ($data as $key => $item) {
+                $translations[$key][$lang] = $item['Value'];
+            }
+        }
+        
+        try {
+            foreach ($data as $key => $item) {
+                $arrival = ProductArrival::create([
                     'product_id' => $item['ProductId'],
                     'date' => $item['Arrival'],
                     'quantity' => $item['Qty'],
-                ], ['value' => [$lang => $item['Value']]]);
+                    'value' => $translations[$key]
+                ]);
+                
             }
+        } catch (Exception $e) {
+            echo 'error productarrival';
+            insertProductArrival();
         }
-        dg2_upisulog('productarrival');
+        //        dg2_upisulog('productarrival');
     }
     
     function insertProductSticker()
@@ -356,17 +464,15 @@
         $data = getData('en', 'productsticker');
         
         ProductSticker::truncate();
-        foreach ($data as $item) {
-            //            DB::table('product_stickers')->insert([
-            //                'product_id' => $item['ProductId'],
-            //                'sticker_id' => $item['StickerId']
-            //            ]);
-            DB::insert('insert into product_stickers (product_id, sticker_id) values (?, ?)',
-                [$item['ProductId'], $item['StickerId']]);
-            //            ProductSticker::create();
+        try {
+            foreach ($data as $item) {
+                DB::insert('insert into product_stickers (product_id, sticker_id) values (?, ?)',
+                    [$item['ProductId'], $item['StickerId']]);
+            }
+        } catch (Exception $e) {
+            echo 'error productsticker';
+            insertProductSticker();
         }
-        
-        dg2_upisulog('productsticker');
     }
     
     function insertProductStatus()
@@ -374,12 +480,16 @@
         $data = getData('en', 'productstatus');
         
         ProductStatus::truncate();
-        foreach ($data as $item) {
-            ProductStatus::create([
-                'product_id' => $item['ProductId'],
-                'status_id' => $item['StatusId']
-            ]);
+        try {
+            foreach ($data as $item) {
+                ProductStatus::create([
+                    'product_id' => $item['ProductId'],
+                    'status_id' => $item['StatusId']
+                ]);
+            }
+        } catch (Exception $e) {
+            echo 'error productstatus';
+            insertProductStatus();
         }
-        
-        dg2_upisulog('productstatus');
+        //        dg2_upisulog('productstatus');
     }
