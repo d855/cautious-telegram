@@ -14,15 +14,16 @@ class CreateImagesTable extends Migration
     public function up()
     {
         Schema::create('images', function (Blueprint $table) {
-            $table->unsignedBigInteger('id')->autoIncrement();
+         //   $table->unsignedBigInteger('id')->autoIncrement();
             $table->string('product_id');
-            $table->foreign('product_id')->references('pid')->on('products');
+          //  $table->foreign('product_id')->references('pid')->on('products');
 
             $table->string('image_number');
-            $table->string('pid_inb')->unique();
+           // $table->string('pid_inb')->unique();
             $table->string('image')->nullable()->default(null);
             $table->string('imageWebp')->nullable()->default(null);
             $table->string('imageGif')->nullable()->default(null);
+            $table->primary(['product_id','image']);
             $table->timestamps();
 
         });

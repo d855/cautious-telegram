@@ -60,6 +60,33 @@
         return $token;
     }
     
+    function dg2_upisulog($sta)
+    {
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.digital2.rs/integrations-log/api/create.php',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => '{
+    "sta":"'.$sta.'",
+    "domen":"Laravel promobox",
+    "username":"jejalog",
+    "password":"SuperCica#pas"
+  }',
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: text/plain'
+            ),
+        ));
+        
+        $response = curl_exec($curl);
+        curl_close($curl);
+    }
+    
     function insertColors()
     {
         $locales = ['sr', 'en', 'de', 'sq', 'hr', 'sl', 'mk'];
@@ -74,6 +101,7 @@
                 ], ['name' => [$lang => $color['Name']]]);
             }
         }
+        dg2_upisulog('colors');
     }
     
     function insertStickers()
@@ -92,6 +120,7 @@
                 ]);
             }
         }
+        dg2_upisulog('stickers');
     }
     
     function insertGroups()
@@ -109,6 +138,7 @@
                 ], ['name' => [$lang => $item['Name']]]);
             }
         }
+        dg2_upisulog('groups');
     }
     
     function insertBrands()
@@ -122,6 +152,7 @@
                 'image' => $item['Image']
             ]);
         }
+        dg2_upisulog('brands');
     }
     
     function insertShades()
@@ -138,6 +169,7 @@
                 ], ['name' => [$lang => $item['Name']]]);
             }
         }
+        dg2_upisulog('shades');
     }
     
     function insertStatus()
@@ -151,9 +183,11 @@
                 Status::updateOrCreate([
                     'id' => $item['Id'],
                     'image' => $item['Image'],
-                ], [ 'name' => [$lang => $item['Name']]]);
+                ], ['name' => [$lang => $item['Name']]]);
             }
         }
+        
+        dg2_upisulog('status');
     }
     
     function insertSize()
@@ -172,6 +206,7 @@
                 'sort' => $item['Sort']
             ]);
         }
+        dg2_upisulog('size');
     }
     
     function insertModels()
@@ -196,6 +231,7 @@
                 ], ['description' => [$lang => $item['Description']],]);
             }
         }
+        dg2_upisulog('models');
     }
     
     function insertProducts()
@@ -224,6 +260,7 @@
             $model->minPrice = minPrice($model->name);
             $model->save();
         }
+        dg2_upisulog('products');
     }
     
     function minPrice($modelName)
@@ -238,15 +275,25 @@
         
         Image::truncate();
         foreach ($data as $item) {
-            Image::create([
-                'product_id' => $item['ProductId'],
-                'image_number' => $item['No'],
-                'pid_inb' => $item['ProductId'].'_'.$item['No'],
-                'image' => $item['Image'],
-                'imageWebp' => $item['ImageWebP'],
-                'imageGif' => $item['ImageGif']
-            ]);
+            //            Image::create([
+            //                'product_id' => $item['ProductId'],
+            //                'image_number' => $item['No'],
+            //             //   'pid_inb' => $item['ProductId'].'_'.$item['No'],
+            //                'image' => $item['Image'],
+            //                'imageWebp' => $item['ImageWebP'],
+            //                'imageGif' => $item['ImageGif']
+            //            ]);
+            DB::insert('insert into images (product_id, image_number,image,imageWebp,imageGif) values (?, ?,?,?,?)',
+                [
+                    $item['ProductId'],
+                    $item['No'],
+                    $item['Image'],
+                    $item['ImageWebP'],
+                    $item['ImageGif'],
+                ]);
+            
         }
+        dg2_upisulog('images');
     }
     
     function insertMedia()
@@ -261,6 +308,7 @@
                 'media' => $item['MediaUrl'],
             ]);
         }
+        dg2_upisulog('media');
     }
     
     function insertProductStock()
@@ -270,12 +318,19 @@
         
         ProductStock::truncate();
         foreach ($data as $item) {
-            $newItem = ProductStock::create([
-                'product_id' => $item['ProductId'],
-                'warehouse' => $item['Warehouse'],
-                'quantity' => $item['Qty']
+            //            $newItem = ProductStock::create([
+            //                'product_id' => $item['ProductId'],
+            //                'warehouse' => $item['Warehouse'],
+            //                'quantity' => $item['Qty']
+            //            ]);
+            DB::insert('insert into product_stocks (product_id,warehouse, quantity) values (?, ?, ?)', [
+                $item['ProductId'],
+                $item['Warehouse'],
+                $item['Qty']
             ]);
+            
         }
+        dg2_upisulog('productstock');
     }
     
     function insertProductArrival()
@@ -293,6 +348,7 @@
                 ], ['value' => [$lang => $item['Value']]]);
             }
         }
+        dg2_upisulog('productarrival');
     }
     
     function insertProductSticker()
@@ -301,13 +357,16 @@
         
         ProductSticker::truncate();
         foreach ($data as $item) {
-//            DB::table('product_stickers')->insert([
-//                'product_id' => $item['ProductId'],
-//                'sticker_id' => $item['StickerId']
-//            ]);
-            DB::insert('insert into product_stickers (product_id, sticker_id) values (?, ?)', [$item['ProductId'], $item['StickerId']]);
-//            ProductSticker::create();
+            //            DB::table('product_stickers')->insert([
+            //                'product_id' => $item['ProductId'],
+            //                'sticker_id' => $item['StickerId']
+            //            ]);
+            DB::insert('insert into product_stickers (product_id, sticker_id) values (?, ?)',
+                [$item['ProductId'], $item['StickerId']]);
+            //            ProductSticker::create();
         }
+        
+        dg2_upisulog('productsticker');
     }
     
     function insertProductStatus()
@@ -321,4 +380,6 @@
                 'status_id' => $item['StatusId']
             ]);
         }
+        
+        dg2_upisulog('productstatus');
     }
