@@ -29,7 +29,6 @@ const insta_slider = [
 
 export default function Home(props) {
     const {site_url} = config;
-    console.log(site_url);
     return (
         <>
             <Head title="Home"></Head>
@@ -149,7 +148,7 @@ export default function Home(props) {
                                                   id={product.id}
                                                   image={product.imageWebP}
                                                   imageHover={product.imageHover ? product.imageHover : product.imageWebP}
-                                                  price={product.minPrice}
+                                                  price={product.price}
                                                   code={product.display_code}
                                                   stock={parseInt(product.stock)}
                                                   status={product.status}

@@ -11,13 +11,17 @@ function Card(props) {
         image: '',
         colors: [],
     })
+    const [dataArrival, setDataArrival] = useState({
+        id: '',
+        qty: '',
+        date: ''
+    });
     const initialState = {
         name: '',
         description: '',
         image: '',
         colors: []
     }
-    let allStock = 0;
     const baseUrl = "http://promobox-laravel.test/api/";
     const modalInfo = () => {
         axios.get(`${baseUrl}model-info/${props.name}`)
@@ -33,6 +37,10 @@ function Card(props) {
             .catch(e => console.log(e))
     }
     const fetchArrival = () => {
+        axios.get(`${baseUrl}product-arrival/${props.id}`)
+            .then((response) => {
+                setDataArrival(response.data)
+            }).catch(e => console.log(e))
     }
     
     const clearState = () => {
@@ -40,12 +48,13 @@ function Card(props) {
     }
     
     const openModal = () => {
+        fetchArrival()
         modalInfo()
         setShowStockInfo(true);
-        
     }
     const closeModal = () => {
         setShowStockInfo(false);
+        console.log(dataArrival)
         clearState()
     }
     
@@ -74,7 +83,7 @@ function Card(props) {
             </Link>
             <div className="text-xs text-gray-700 flex-1">{props.description}</div>
             <div className="flex flex-col justify-end">
-                <span className="flex items-center text-lg font-bold mt-3">{props.price}&euro;</span>
+                <span className="flex items-center text-lg font-bold mt-3">{props.price}</span>
                 <div className="flex flex-col justify-end mb-3">
                     <span className="block text-xs text-gray-400">Zalihe: {props.stock.toLocaleString('en-US')}</span>
                     <button onClick={openModal}
@@ -86,14 +95,14 @@ function Card(props) {
                     {props.shades.map((shade, index) => {
                         return (
                             <div key={index}
-                                 className={`inline-block h-6 w-6 rounded-full ring-2 ring-gray-200`}
+                                 className={`inline-block h-5 w-5 rounded-full ring-2 ring-gray-200`}
                                  style={shade[0].html ? {background: `${shade[0].html}`} : {background: `url(${shade[0].image})`}}></div>
                         )
-                    })}
+                    }).splice(0, 5)}
                 
                 </div>
                 <Modal show={showStockInfo} onClose={closeModal} maxWidth="7xl">
-                    <div className="">
+                    <div className="max-h-[500px] overflow-y-auto">
                         <header className="px-5 py-5 flex justify-between items-center">
                             <div className="flex items-center space-x-3">
                                 <img src={modalData.image}
@@ -101,7 +110,7 @@ function Card(props) {
                                      alt="" />
                                 <div>
                                     <h3 className="uppercase font-bold">{modalData.name}</h3>
-                                    <span className="text-sm text-gray-400">{modalData.description}</span>
+                                    <span className="text-sm text-gray-700">{modalData.description}</span>
                                 </div>
                             </div>
                             <div className="">
@@ -167,9 +176,14 @@ function Card(props) {
                                                 </div>
                                             </td>
                                             <td className="text-center">
-                                                <div className="font-medium">
-                                                
+                                                <div className="font-semibold">
+                                                    {dataArrival.map((arr) => {
+                                                        return (
+                                                            arr['product_id'] === c.Sizes[0].Product.Id ? arr['quantity'] + ' kom ' + arr['date'] : ''
+                                                        )
+                                                    })}
                                                 </div>
+                                            
                                             </td>
                                         </tr>
                                     )
@@ -183,5 +197,5 @@ function Card(props) {
         </div>
     );
 }
-
-export default Card;
+    
+    export default Card;

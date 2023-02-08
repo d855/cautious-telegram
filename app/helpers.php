@@ -115,7 +115,6 @@
             echo 'error colors '.$e;
             insertColors();
         }
-        //  dg2_upisulog('colors');
     }
     
     function insertStickers()
@@ -180,7 +179,6 @@
             echo 'error groups';
             insertGroups();
         }
-        // dg2_upisulog('groups');
     }
     
     function insertBrands()
@@ -189,16 +187,16 @@
         $data = getData($lang, 'brand');
         Brand::truncate();
         
-        foreach ($data as $item) {
-            try {
+        try {
+            foreach ($data as $item) {
                 Brand::create([
                     'pid' => $item['Id'],
                     'image' => $item['Image']
                 ]);
-            } catch (Exception $e) {
-                echo 'error brands';
-                insertBrands();
             }
+        } catch (Exception $e) {
+            echo 'error brands';
+            insertBrands();
         }
     }
     
@@ -280,7 +278,6 @@
             echo 'error size';
             insertSize();
         }
-        // dg2_upisulog('size');
     }
     
     function insertModels()
@@ -314,8 +311,6 @@
                     'sort' => $item['Sort'],
                     'description' => $translations[$item['Name']]
                 ]);
-                //                    $model->description = [$lang => $item['Description']];
-                //                    $model->save();
             }
         } catch (Exception $e) {
             echo 'error model '.$e;
@@ -349,17 +344,6 @@
             echo 'error product';
             insertProducts();
         }
-        $models = Pmodel::all();
-        foreach ($models as $model) {
-            $model->minPrice = minPrice($model->name);
-            $model->save();
-        }
-        //        dg2_upisulog('products');
-    }
-    
-    function minPrice($modelName)
-    {
-        return Product::where('model_name', $modelName)->min('price');
     }
     
     function insertImages()
@@ -383,7 +367,6 @@
             echo 'error productimage';
             insertImages();
         }
-        //        dg2_upisulog('images');
     }
     
     function insertMedia()
@@ -403,7 +386,6 @@
             echo 'error productmedia';
             insertMedia();
         }
-        //        dg2_upisulog('media');
     }
     
     function insertProductStock()
@@ -425,7 +407,6 @@
             echo 'error productstock';
             insertProductStock();
         }
-        //        dg2_upisulog('productstock');
     }
     
     function insertProductArrival()
@@ -456,7 +437,6 @@
             echo 'error productarrival';
             insertProductArrival();
         }
-        //        dg2_upisulog('productarrival');
     }
     
     function insertProductSticker()
@@ -477,9 +457,9 @@
     
     function insertProductStatus()
     {
+        ProductStatus::truncate();
         $data = getData('en', 'productstatus');
         
-        ProductStatus::truncate();
         try {
             foreach ($data as $item) {
                 ProductStatus::create([
@@ -491,5 +471,4 @@
             echo 'error productstatus';
             insertProductStatus();
         }
-        //        dg2_upisulog('productstatus');
     }

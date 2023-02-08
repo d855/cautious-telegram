@@ -39,10 +39,9 @@
     
     Route::get('/updatedb', function () {
         
-//        Artisan::call('migrate:fresh');
+        Artisan::call('migrate:fresh');
         
         $start_time = microtime(true);
-        
         
         Config::set('database.default', 'mysqlupdate');
         DB::reconnect('mysqlupdate');
@@ -72,6 +71,7 @@
         
         $end_time = microtime(true);
         $execution_time = ($end_time - $start_time);
+        
         dg2_upisulog('Gotovo za '.round($execution_time, 2).' sec');
         die('Gotovo za '.round($execution_time, 2).' sec');
     });

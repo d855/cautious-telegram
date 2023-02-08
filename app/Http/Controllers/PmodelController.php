@@ -16,11 +16,9 @@ class PmodelController extends Controller
 
     public function show(Pmodel $model)
     {
-//        dd($model);
         $product = getData('sr', "model/$model->id");
         return Inertia::render('Product/Show', [
             'product' => $product,
         ]);
-//        dd($product);
     }
 }
