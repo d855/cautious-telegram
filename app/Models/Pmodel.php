@@ -39,12 +39,13 @@
         public function getShadesAttribute()
         {
             $shades = [];
-            foreach (Product::select('shade_id')->where('pid', 'like', $this->id.'%')->get() as $shade) {
-                $shades[] =
-                    $shade ? Shade::where('id', $shade['shade_id'])->get() : null;
+            foreach (Product::select('shade_id')->where('model_id', 'like', $this->id.'%')->get() as $shade) {
+                if($shade) {
+                    $shades[] = Shade::where('id', $shade['shade_id'])->get();
+                }
             }
             
-            return array_unique($shades);
+            return array_values(array_unique($shades));
         }
         
         public function minPrice()

@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper";
 import 'swiper/css/bundle';
 import Card from "@/Components/Card";
-import config from  '../config.json'
+import config from '../config.json'
 
 const slider1_images = [
     'https://promobox.com/wp-content/uploads/2022/09/KUTIJE.webp',
@@ -14,17 +14,14 @@ const slider1_images = [
     'https://promobox.com/wp-content/uploads/2022/11/Slide_Spot-Yard-pad.webp'
 ]
 const insta_slider = [
-    'https://scontent-frt3-2.cdninstagram.com/v/t51.29350-15/327263531_726526565493177_9129397074060107353_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=8ae9d6&_nc_ohc=2bIpYB8QCAsAX9GgMcl&_nc_ht=scontent-frt3-2.cdninstagram.com&edm=ANo9K5cEAAAA&oh=00_AfDJYPTYRgbn-ZrPEAGnUYfrNZgJDaGaaNC87hAbYoZOtg&oe=63E25E46',
-    'https://scontent-frx5-1.cdninstagram.com/v/t51.29350-15/326608384_3455781324657498_8411368012147793970_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=8ae9d6&_nc_ohc=bErZd5MkJaIAX_TeZ0I&_nc_ht=scontent-frx5-1.cdninstagram.com&edm=ANo9K5cEAAAA&oh=00_AfCFqFLrs1IedXIr7x_jpqkWL4fcx_KZAgVjYiXHGfGH-A&oe=63E1BFBD',
-    'https://scontent-frx5-1.cdninstagram.com/v/t51.29350-15/326151319_755786025449980_1660911364125243851_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=8ae9d6&_nc_ohc=eR9P-eAKOS8AX8mLZ-_&_nc_ht=scontent-frx5-1.cdninstagram.com&edm=ANo9K5cEAAAA&oh=00_AfATBySYxGLbON-BjDbsDeJyiDXlWf6-H356eAli1x-PEg&oe=63E0FAC4',
-    'https://scontent-frx5-1.cdninstagram.com/v/t51.29350-15/326069106_144672978401804_4807509277798102786_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=8ae9d6&_nc_ohc=yMTrsi-F46IAX-tCzaC&_nc_ht=scontent-frx5-1.cdninstagram.com&edm=ANo9K5cEAAAA&oh=00_AfAkXXIYtlBwc5lZO6kYrVBjioRkuuc3vCLRQKr36DV9aQ&oe=63E1E581',
-    'https://scontent-frt3-2.cdninstagram.com/v/t51.29350-15/325462746_732705761382902_6606770487167584246_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=8ae9d6&_nc_ohc=fn611wcDL9wAX9FBg_I&_nc_ht=scontent-frt3-2.cdninstagram.com&edm=ANo9K5cEAAAA&oh=00_AfBwX_u9dT20DeUQRdYtuvHAcLw4BS9RkpayYwRntBy0JQ&oe=63E12429',
-    'https://scontent-frt3-2.cdninstagram.com/v/t51.29350-15/324841091_183120264319556_1716880719094959215_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=8ae9d6&_nc_ohc=a4BQ7QiRxdgAX9rqUCb&_nc_ht=scontent-frt3-2.cdninstagram.com&edm=ANo9K5cEAAAA&oh=00_AfCYDn7T25QzFRrp2uj5KtUKbykoFsUhCOG7_APHNXvFDw&oe=63E18296',
-    'https://scontent-frx5-1.cdninstagram.com/v/t51.29350-15/321935374_830097148282903_5994465963047221776_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=8ae9d6&_nc_ohc=MoEfX7xrkH8AX-HmPvp&_nc_ht=scontent-frx5-1.cdninstagram.com&edm=ANo9K5cEAAAA&oh=00_AfCC9ZCCs-Kxmusf4qWDglwWh4zT7Mtb6rPQkbmdEM5tug&oe=63E1A9E9',
-    'https://scontent-frx5-1.cdninstagram.com/v/t51.29350-15/323701604_707565530877195_447145571966200877_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=8ae9d6&_nc_ohc=Gy2pzgx-eboAX8IuANt&_nc_ht=scontent-frx5-1.cdninstagram.com&edm=ANo9K5cEAAAA&oh=00_AfBufF6Onepl75X9z8-1JtYKoQ8sD-VffhRRe3wnyheMFw&oe=63E1A5ED',
-    'https://scontent-frx5-1.cdninstagram.com/v/t51.29350-15/323688553_183645907678943_3292041488657846710_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=8ae9d6&_nc_ohc=9qa4dUxTQDsAX8NmZ9U&_nc_oc=AQlJghxpqBi8D1whCLmYmE3LMGHwA0sQytdUrt-DOxbBG-xTDCRFVsFKC9v_uzCfHXM&_nc_ht=scontent-frx5-1.cdninstagram.com&edm=ANo9K5cEAAAA&oh=00_AfATu8nDazeLyAHrASoxldvu_wWhMjntpkhJI0ma5B6IrA&oe=63E28D86',
-    'https://scontent-frt3-2.cdninstagram.com/v/t51.29350-15/324562385_111406378417585_5451360344613599645_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=8ae9d6&_nc_ohc=TPD42yXAC_UAX_0IVry&_nc_ht=scontent-frt3-2.cdninstagram.com&edm=ANo9K5cEAAAA&oh=00_AfAMzA-_3wh_mFxUEeLSn-6CjLCht1diKWB_I4_kxPDE1A&oe=63E0D2A4',
-
+    'https://scontent-frx5-1.cdninstagram.com/v/t51.29350-15/329358698_715946926818779_2050814668145688705_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=8ae9d6&_nc_ohc=WjoOkQxAxHYAX9ZWJoE&_nc_ht=scontent-frx5-1.cdninstagram.com&edm=ANo9K5cEAAAA&oh=00_AfBqXrKzbRBFjztjboNUB-f4RhxstZ80ZGXLS2OXu8DBzA&oe=63E8C1DF',
+    'https://scontent-frx5-1.cdninstagram.com/v/t51.29350-15/323688553_183645907678943_3292041488657846710_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=8ae9d6&_nc_ohc=X7C9aU6-7oMAX9zUkIN&_nc_oc=AQm86D4gm5ohEUHjAAZO1BvrFQKoWae0KBSGENxf7mqMB1Q1KMyhXIb3l7qqcG7SKp4&_nc_ht=scontent-frx5-1.cdninstagram.com&edm=ANo9K5cEAAAA&oh=00_AfBZdynPEOif3yvUp80vpLpjmhtpxSu0sPxFn04ld_gRQA&oe=63E87C46',
+    'https://scontent-frx5-1.cdninstagram.com/v/t51.29350-15/329039916_796002915282585_4795561478588684764_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=8ae9d6&_nc_ohc=4RnmcTnFizQAX_Udmnv&_nc_ht=scontent-frx5-1.cdninstagram.com&edm=ANo9K5cEAAAA&oh=00_AfCsFRezTrRvLNRbTL_AA7Yn0MSikIosx9QkQYnRJe7z9w&oe=63EA4458',
+    'https://scontent-frt3-2.cdninstagram.com/v/t51.29350-15/324841091_183120264319556_1716880719094959215_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=8ae9d6&_nc_ohc=hsChS04RzUkAX9t7Ily&_nc_ht=scontent-frt3-2.cdninstagram.com&edm=ANo9K5cEAAAA&oh=00_AfBQn8kTkSeu3nBJO3ouCkx-h7RQ-tNma5vrmWXN4evKKA&oe=63E96B96',
+    'https://scontent-frt3-2.cdninstagram.com/v/t51.29350-15/325462746_732705761382902_6606770487167584246_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=8ae9d6&_nc_ohc=6xcddXsfgZAAX9IyKOI&_nc_ht=scontent-frt3-2.cdninstagram.com&edm=ANo9K5cEAAAA&oh=00_AfAFK_0Or_bMaHJiHkSl5-LQyOtC3ADufLEKiNlqQVXx4Q&oe=63E90D29',
+    'https://scontent-frt3-2.cdninstagram.com/v/t51.29350-15/324562385_111406378417585_5451360344613599645_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=8ae9d6&_nc_ohc=g9e8IUThikkAX_aVRWQ&_nc_ht=scontent-frt3-2.cdninstagram.com&edm=ANo9K5cEAAAA&oh=00_AfBGcfTG8ekXU5XIT1O-mwz9J-LiO4t_9p0eXGngqgnyDQ&oe=63E8BBA4',
+    'https://scontent-frx5-1.cdninstagram.com/v/t51.29350-15/324548769_1313263875887637_840757781644706473_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=8ae9d6&_nc_ohc=LQ_GoECrCbEAX-ZuFlM&_nc_ht=scontent-frx5-1.cdninstagram.com&edm=ANo9K5cEAAAA&oh=00_AfCXxDt62fZsAqTHA45aR6ChE_So-kXhCpJnyYdHCmghdg&oe=63E96E94',
+    'https://scontent-frx5-1.cdninstagram.com/v/t51.29350-15/323701604_707565530877195_447145571966200877_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=8ae9d6&_nc_ohc=nRG0m8g9qdYAX-fgi6Y&_nc_ht=scontent-frx5-1.cdninstagram.com&edm=ANo9K5cEAAAA&oh=00_AfDKgBuAwsXu4OwHLC6SgF_hLRGbaDPz59Wy2-hZ3rPmTA&oe=63E98EED'
 ]
 
 export default function Home(props) {
@@ -141,7 +138,7 @@ export default function Home(props) {
                                     touchRatio={1.5}
                                     spaceBetween={20}
                                     className="swiper-2">
-                                {props.latest.data.map((product, index) => {
+                                {props.latest.map((product, index) => {
                                     return (
                                         <SwiperSlide key={index}>
                                             <Card name={product.name}

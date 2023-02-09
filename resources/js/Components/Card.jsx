@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Link } from "@inertiajs/react";
 import Modal from "@/Components/Modal";
 import axios from "axios";
+import SingleSizeProduct from "@/Components/SingleSizeProduct";
+import { data } from "autoprefixer";
+import MultiSizeProduct from "@/Components/MultiSizeProduct";
 
 function Card(props) {
     const [showStockInfo, setShowStockInfo] = useState(false);
@@ -24,37 +27,29 @@ function Card(props) {
     }
     const baseUrl = "http://promobox-laravel.test/api/";
     const modalInfo = () => {
-        axios.get(`${baseUrl}model-info/${props.name}`)
-            .then((response) => {
-                setModalData({
-                    id: response.data.Id,
-                    name: response.data.Name,
-                    description: response.data.Description,
-                    image: response.data.ImageWebP,
-                    colors: response.data.Colors
-                });
+        axios.all([
+            axios.get(`${baseUrl}model-info/${props.name}`),
+            axios.get(`${baseUrl}product-arrival/${props.id}`)
+        ]).then(axios.spread((data1, data2) => {
+            setModalData({
+                id: data1.data.Id,
+                name: data1.data.Name,
+                description: data1.data.Description,
+                image: data1.data.ImageWebP,
+                colors: data1.data.Colors
             })
-            .catch(e => console.log(e))
+            setDataArrival(data2.data)
+        }))
     }
-    const fetchArrival = () => {
-        axios.get(`${baseUrl}product-arrival/${props.id}`)
-            .then((response) => {
-                setDataArrival(response.data)
-            }).catch(e => console.log(e))
-    }
-    
     const clearState = () => {
         setModalData({...initialState})
     }
-    
     const openModal = () => {
-        fetchArrival()
         modalInfo()
         setShowStockInfo(true);
     }
     const closeModal = () => {
         setShowStockInfo(false);
-        console.log(dataArrival)
         clearState()
     }
     
@@ -79,9 +74,9 @@ function Card(props) {
             </div>
             <span className="text-xs text-gray-600">{props.code}</span>
             <Link href={route('models.show', props.id)} className="w-fit">
-                <h3 className="text-sm font-bold uppercase md:text-xl">{props.name}</h3>
+                <h3 className="text-sm font-semibold uppercase md:text-xl">{props.name}</h3>
             </Link>
-            <div className="text-xs text-gray-700 flex-1">{props.description}</div>
+            <div className="text-xs text-gray-800 flex-1">{props.description}</div>
             <div className="flex flex-col justify-end">
                 <span className="flex items-center text-lg font-bold mt-3">{props.price}</span>
                 <div className="flex flex-col justify-end mb-3">
@@ -96,106 +91,27 @@ function Card(props) {
                         return (
                             <div key={index}
                                  className={`inline-block h-5 w-5 rounded-full ring-2 ring-gray-200`}
-                                 style={shade[0].html ? {background: `${shade[0].html}`} : {background: `url(${shade[0].image})`}}></div>
+                                 style={shade[0]?.html ? {background: `${shade[0].html}`} : {background: `url(${shade[0]?.image})`}}></div>
                         )
                     }).splice(0, 5)}
                 
                 </div>
-                <Modal show={showStockInfo} onClose={closeModal} maxWidth="7xl">
-                    <div className="max-h-[500px] overflow-y-auto">
-                        <header className="px-5 py-5 flex justify-between items-center">
-                            <div className="flex items-center space-x-3">
-                                <img src={modalData.image}
-                                     className="w-36"
-                                     alt="" />
-                                <div>
-                                    <h3 className="uppercase font-bold">{modalData.name}</h3>
-                                    <span className="text-sm text-gray-700">{modalData.description}</span>
-                                </div>
-                            </div>
-                            <div className="">
-                                <select name="#" id="#" className="w-72 rounded-md border-gray-400">
-                                    <option value="0">Izaberi boju</option>
-                                    {modalData.colors.map((color, index) => {
-                                        return (
-                                            <option key={index} value="0" className="flex">
-                                                {color.Name}
-                                            </option>
-                                        )
-                                    })}
-                                </select>
-                            </div>
-                        </header>
-                        <section>
-                            <table className="w-full border-collapse">
-                                <thead className="bg-gray-50">
-                                <tr>
-                                    <th className="px-6 py-4 font-medium text-gray-900"></th>
-                                    <th className="px-6 py-4 font-medium text-gray-900">Cena</th>
-                                    <th className="px-6 py-4 font-medium text-gray-900">Zalihe</th>
-                                    <th className="px-6 py-4 font-medium text-gray-900">Rezervisano</th>
-                                    <th className="px-6 py-4 font-medium text-gray-900">Dolazak</th>
-                                </tr>
-                                </thead>
-                                <tbody className="divide-y divide-gray-100 border-t border-gray-100">
-                                {modalData.colors.map((c, index) => {
-                                    return (
-                                        <tr key={index} className="hover:bg-gray-50">
-                                            <th className="flex gap-3 px-6 py-4 font-normal text-gray-900">
-                                                <div className={`relative border border-gray-300 rounded-full h-10 w-10 bg-[${c.HtmlColor}]}`}
-                                                     style={{background: `${c.HtmlColor}`}}>
-                                                </div>
-                                                <div className="text-sm text-left">
-                                                    <div className="font-medium text-gray-500">
-                                                        {(c.Sizes.length > 1) ? c.Sizes[index].Product.ProductIdView : c.Sizes[0].Product.ProductIdView}
-                                                    </div>
-                                                    <div className="text-gray-400">{c.Name}</div>
-                                                </div>
-                                            </th>
-                                            <td className="text-center">
-                                                <div className="font-medium">
-                                                    {(c.Sizes.length > 1) ? c.Sizes[index].Product.Price.toFixed(2) : c.Sizes[0].Product.Price.toFixed(2)}&euro;
-                                                </div>
-                                            </td>
-                                            <td className="text-center">
-                                                <div className="font-medium">
-                                                    {
-                                                        c.Sizes[0].Product.Stocks.map((stock) => {
-                                                            if (stock.Warehouse === 'Warehouse1' || stock.Warehouse === 'Warehouse2') {
-                                                                return (stock.Qty)
-                                                            }
-                                                        }).reduce((a, b) => a + b, 0).toLocaleString('en-US')
-                                                    }
-                                                </div>
-                                            </td>
-                                            <td className="text-center">
-                                                <div className="font-medium">
-                                                    {c.Sizes[0].Product.Stocks.map((stock) => {
-                                                        stock.Warehouse === 'Warehouse3' && stock.Qty
-                                                    })}
-                                                </div>
-                                            </td>
-                                            <td className="text-center">
-                                                <div className="font-semibold">
-                                                    {dataArrival.map((arr) => {
-                                                        return (
-                                                            arr['product_id'] === c.Sizes[0].Product.Id ? arr['quantity'] + ' kom ' + arr['date'] : ''
-                                                        )
-                                                    })}
-                                                </div>
-                                            
-                                            </td>
-                                        </tr>
-                                    )
-                                })}
-                                </tbody>
-                            </table>
-                        </section>
-                    </div>
-                </Modal>
+                {modalData && <Modal show={showStockInfo} onClose={closeModal} maxWidth="7xl">
+                    <SingleSizeProduct image={modalData.image}
+                                       name={modalData.name}
+                                       description={modalData.description}
+                                       arrival={dataArrival}
+                                       colors={modalData.colors}  />
+                    {/*<MultiSizeProduct image={modalData.image}*/}
+                    {/*                   name={modalData.name}*/}
+                    {/*                   description={modalData.description}*/}
+                    {/*                   arrival={dataArrival}*/}
+                    {/*                   colors={modalData.colors} />*/}
+                </Modal> }
+                
             </div>
         </div>
     );
 }
-    
-    export default Card;
+
+export default Card;
