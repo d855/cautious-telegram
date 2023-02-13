@@ -12,12 +12,12 @@
         public function home()
         {
 //            dd(PModel::orderBy('sort', 'asc')->where('name', 'MASTER MEN 180')->get());
-//            return Inertia::render('Home', [
-//                'latest' => PModel::orderBy('sort', 'asc')->where('name', 'ORGANIC T')->get(),
-//            ]);
             return Inertia::render('Home', [
-                'latest' => PModel::orderBy('sort', 'asc')->take(12)->get(),
+                'latest' => PModel::orderBy('sort', 'asc')->where('name', 'MASTER MEN')->get(),
             ]);
+//            return Inertia::render('Home', [
+//                'latest' => PModel::orderBy('sort', 'asc')->take(12)->get(),
+//            ]);
         }
         
     }

@@ -422,20 +422,19 @@
                 $translations[$key][$lang] = $item['Value'];
             }
         }
-        
+//        dd($translations);
         try {
             foreach ($data as $key => $item) {
-                $arrival = ProductArrival::create([
+                ProductArrival::create([
                     'product_id' => $item['ProductId'],
                     'date' => $item['Arrival'],
                     'quantity' => $item['Qty'],
                     'value' => $translations[$key]
                 ]);
-                
             }
         } catch (Exception $e) {
             echo 'error productarrival';
-            insertProductArrival();
+            die($e);
         }
     }
     

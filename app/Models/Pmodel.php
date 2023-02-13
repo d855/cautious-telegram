@@ -21,6 +21,8 @@
             return ProductStock::where('product_id', 'like', $this->id.'%')->sum('quantity');
         }
         
+        // Get sticker
+        
         public function getStatusAttribute()
         {
             $statuses = [];

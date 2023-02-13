@@ -23,7 +23,7 @@ class CreateProductArrivalTable extends Migration
 
             $table->string('date');
             $table->integer('quantity')->nullable()->default(null);
-            $table->string('value')->nullable()->default(null);
+            $table->text('value')->nullable()->default(null);
             $table->timestamps();
         });
 
