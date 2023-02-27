@@ -21,8 +21,6 @@
             return ProductStock::where('product_id', 'like', $this->id.'%')->sum('quantity');
         }
         
-        // Get sticker
-        
         public function getStatusAttribute()
         {
             $statuses = [];
@@ -30,7 +28,7 @@
                 $statuses[] = $one ? Status::where('id', $one['status_id'])->get() : null;
             }
             
-            return array_unique($statuses);
+            return array_values(array_unique($statuses));
         }
         
         public function getDisplayCodeAttribute()
@@ -70,6 +68,11 @@
             } else {
                 return 'Call for price';
             }
+        }
+    
+        public function getGroupOneAttribute()
+        {
+        
         }
         
     }

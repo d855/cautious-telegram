@@ -48,21 +48,21 @@
         
         Schema::disableForeignKeyConstraints();
         
-//        insertColors();
-//        insertStickers();
-//        insertGroups();
-//        insertBrands();
-//        insertShades();
-//        insertStatus();
-//        insertSize();
-//        insertModels();
-//        insertProducts();
-//        insertImages();
-//        insertMedia();
-//        insertProductStock();
+        insertColors();
+        insertStickers();
+        insertGroups();
+        insertBrands();
+        insertShades();
+        insertStatus();
+        insertSize();
+        insertModels();
+        insertProducts();
+        insertImages();
+        insertMedia();
+        insertProductStock();
         insertProductArrival();
-//        insertProductSticker();
-//        insertProductStatus();
+        insertProductSticker();
+        insertProductStatus();
         
         Config::set('database.default', 'mysql');
         DB::reconnect('mysql');

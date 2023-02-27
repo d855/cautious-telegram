@@ -42,7 +42,7 @@ function SingleSizeProduct(props) {
                         return (
                             <tr key={index} className="hover:bg-gray-50">
                                 <th className="flex gap-3 px-6 py-4 font-normal text-gray-900">
-                                    <div className={`relative border border-gray-300 rounded-full h-10 w-10`}
+                                    <div className={`relative rounded-full h-10 w-10 ${(c.Name === 'Bela' || c.Name === 'Transparentna' ? 'border border-gray-300' : '')}`}
                                          style={{background: `${c.HtmlColor}`}}>
                                     </div>
                                     <div className="text-sm text-left">
@@ -63,7 +63,7 @@ function SingleSizeProduct(props) {
                                                 if (stock.Warehouse === 'Warehouse1' || stock.Warehouse === 'Warehouse2') {
                                                     return (stock.Qty)
                                                 }
-                                            }).reduce((a, b) => a + b, 0).toLocaleString('en-US')
+                                            }).reduce((accumulator, currentValue) => accumulator + currentValue, 0).toLocaleString('en-US')
                                         }
                                     </div>
                                 </td>

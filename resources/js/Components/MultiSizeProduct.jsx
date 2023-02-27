@@ -53,7 +53,7 @@ function MultiSizeProduct(props) {
                         return (
                             <tr key={index} className="hover:bg-gray-50">
                                 <td className="flex gap-3 pl-6 py-4 font-normal text-gray-900">
-                                    <div className={`relative border border-gray-300 rounded-full h-10 w-10`}
+                                    <div className={`relative rounded-full h-10 w-10 ${c.Name === 'Bela' ? 'border border-gray-300' : ''}`}
                                          style={{background: `${c.HtmlColor}`}}>
                                     </div>
                                     <div className="text-sm text-left">
@@ -87,7 +87,7 @@ function MultiSizeProduct(props) {
                                                     }).reduce((accumulator, currentValue) => {
                                                         // console.log(`acc:` + a, 'current:' + b)
                                                         return accumulator + currentValue > 0 ? accumulator + currentValue : 'Nedostupno'
-                                                    }, 0).toLocaleString('en-US')
+                                                    }, 0).toLocaleString('rs-RS')
                                                     }</div>
                                                     <div>
                                                         {size.Product.Stocks[2]?.Warehouse === 'Warehouse3' ? size.Product.Stocks[2].Qty : '-'}

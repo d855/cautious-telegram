@@ -64,13 +64,13 @@ function Card(props) {
                          alt="" className="w-32 md:w-36 lg:w-28 2xl:w-44 md:shrink hidden group-hover:block" />
                 </div>
                 <div className="flex flex-col basis-10 items-end space-y-1">
-                    {/*{props.status && props.status.map((status, index) => {*/}
-                    {/*    return (*/}
-                    {/*        <img key={index}*/}
-                    {/*             src={status[0].image}*/}
-                    {/*             className="h-10" alt="" />*/}
-                    {/*    )*/}
-                    {/*})}*/}
+                    {props.status && props.status.map((status, index) => {
+                        return (
+                            <img key={index}
+                                 src={status[0].image}
+                                 className="h-10" alt="" />
+                        )
+                    })}
                 </div>
             </div>
             <span className="text-xs text-gray-600">{props.code}</span>
@@ -82,7 +82,7 @@ function Card(props) {
             <div className="flex flex-col justify-end">
                 <span className="flex items-center text-lg font-bold mt-3">{props.price}</span>
                 <div className="flex flex-col space-y-2 justify-end mb-3">
-                    <span className="block text-xs text-gray-700">Zalihe: {props.stock.toLocaleString('en-US')}</span>
+                    <span className="block text-xs text-gray-700">Zalihe: {props.stock.toLocaleString('rs-RS')}</span>
                     <button onClick={openModal}
                             className="block text-xs text-left w-fit text-blue-600 transition ease-in duration-500 hover:underline">Prikaz
                                                                                                                                     zaliha
@@ -92,7 +92,7 @@ function Card(props) {
                     {props.shades.map((shade, index) => {
                         return (
                             <div key={index}
-                                 className={`inline-block h-6 w-6 rounded-full ring-1 ring-gray-200`}
+                                 className={`inline-block h-6 w-6 rounded-full ${(shade[0].html === '#ffffff' || shade[0].name.sr === 'Transparentna') ? `ring-1 ring-gray-400` : '' }`}
                                  style={shade[0]?.html ? {background: `${shade[0].html}`} : {background: `url(${shade[0]?.image})`}}></div>
                         )
                     }).splice(0, 7)}

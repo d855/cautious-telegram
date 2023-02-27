@@ -18,6 +18,8 @@
     use App\Models\Sticker;
     use Illuminate\Support\Facades\DB;
     use Illuminate\Support\Facades\Http;
+    use Illuminate\Support\Facades\Log;
+    use Illuminate\Support\Facades\Storage;
     
     
     function getData($lang, $model)
@@ -75,7 +77,7 @@
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => '{
     "sta":"'.$sta.'",
-    "domen":"Laravel promobox",
+    "domen":"Laravel nesto",
     "username":"jejalog",
     "password":"SuperCica#pas"
   }',
@@ -115,6 +117,8 @@
             echo 'error colors '.$e;
             insertColors();
         }
+        Storage::put('file.txt', 'POMOZI BOZE');
+        Log::info('POMOZI BOZE');
     }
     
     function insertStickers()
