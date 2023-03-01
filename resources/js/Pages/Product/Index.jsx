@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Card from "@/Components/Card";
-import { Head } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 
 function Index(props) {
     
@@ -92,15 +92,27 @@ function Index(props) {
                                 {props.categories.map(category => {
                                     return (
                                         <details className="ml-5">
-                                            <summary>{JSON.parse(category.name).sr}({category.count})</summary>
+                                            <summary>
+                                                <Link href={route('products.index', {'category1': JSON.parse(category.slug).sr})}>{JSON.parse(category.name).sr}({category.count})</Link>
+                                            </summary>
                                             {category.subcats.map(subc => {
                                                 return (
                                                     <details className="ml-5">
-                                                        <summary>{JSON.parse(subc.name).sr}({subc.count})</summary>
+                                                        <summary>
+                                                            <Link href={route('products.index', {
+                                                                'category1': JSON.parse(category.slug).sr,
+                                                                'category2': JSON.parse(subc.slug).sr
+                                                            })}>{JSON.parse(subc.name).sr}({subc.count})</Link>
+                                                        </summary>
                                                         {subc.subcats?.map(subcc => {
                                                             return (
                                                                 <details className="ml-5">
-                                                                    <summary>{JSON.parse(subcc.name).sr}({subcc.count})</summary>
+                                                                    <summary><Link href={route('products.index', {
+                                                                        'category1': JSON.parse(category.slug).sr,
+                                                                        'category2': JSON.parse(subc.slug).sr,
+                                                                        'category3': JSON.parse(subcc.slug).sr,
+                                                                    })}>{JSON.parse(subcc.name).sr}({subcc.count})</Link>
+                                                                    </summary>
                                                                 </details>
                                                             )
                                                         })}
@@ -117,7 +129,7 @@ function Index(props) {
                                     {props.colors.map(color =>
                                         <li className={`w-5 h-5 mt-1 mr-2 rounded-full overflow-hidden`}
                                             style={{background: `${color.html}`}}>
-                                            <img src={color.image}  alt="" />
+                                            <img src={color.image} alt="" />
                                         </li>
                                     )}
                                 </ul>
@@ -127,7 +139,8 @@ function Index(props) {
                                 <ul className="flex flex-col">
                                     {props.brands.map(brand =>
                                         <li className={`ml-2 mt-1 mr-2 rounded-full overflow-hidden`}>
-                                            <input type="checkbox" className="rounded-full w-4 mr-2 focus:outline-none" />
+                                            <input type="checkbox"
+                                                   className="rounded-full w-4 mr-2 focus:outline-none" />
                                             {brand.pid}
                                         </li>
                                     )}
@@ -148,7 +161,8 @@ function Index(props) {
                                 <ul className="flex flex-col">
                                     {props.statuses.map(status =>
                                         <li className={`ml-2 mt-1 mr-2 rounded-full overflow-hidden`}>
-                                            <input type="checkbox" className="rounded-full w-4 mr-2 focus:outline-none" />
+                                            <input type="checkbox"
+                                                   className="rounded-full w-4 mr-2 focus:outline-none" />
                                             {status.name.sr}
                                         </li>
                                     )}
@@ -187,7 +201,8 @@ function Index(props) {
             </div>
         </>
     
-    );
+    )
+        ;
 }
 
 export default Index;

@@ -339,6 +339,9 @@
                     'color_id' => $item['Color'],
                     'shade_id' => $item['Shade'],
                     'size_id' => $item['Size'],
+                    'group1' => $item['Group1'],
+                    'group2' => $item['Group2'],
+                    'group3' => $item['Group3'],
                     'price' => $item['Price'],
                     'pricePromobox' => $item['Price2'],
                     'name' => $item['Name']
