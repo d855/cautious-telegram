@@ -17,7 +17,7 @@ class CreateGroupsTable extends Migration
             $table->unsignedBigInteger('id')->autoIncrement();
             $table->string('pid')->unique();
             $table->text('name')->nullable();
-            $table->string('slug')->nullable();
+            $table->text('slug')->nullable();
             $table->string('sort')->nullable()->default(null);
             $table->string('parent')->nullable()->default(null);
             $table->string('multitree')->nullable()->default(null);
